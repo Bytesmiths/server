@@ -8062,3 +8062,14 @@ Item* TABLE_LIST::build_pushable_cond_for_table(THD *thd, Item *cond)
     return cond->build_clone(thd, thd->mem_root);
   return 0;
 }
+
+
+Field *TABLE::find_field_by_name(const char *str) const
+{
+  for (Field **tmp= field; *tmp; tmp++)
+  {
+    if (!my_strcasecmp(system_charset_info, (*tmp)->field_name, str))
+      return *tmp;
+  }
+  return NULL;
+}

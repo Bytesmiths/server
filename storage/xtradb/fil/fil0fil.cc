@@ -4587,6 +4587,11 @@ check_first_page:
 	}
 
 	if (!fsp->success) {
+		if (IS_XTRABACKUP()) {
+			/* Do not attempt restore from doublewrite buffer
+			  in Xtrabackup, this does not work.*/
+			return;
+		}
 		if (!restore_attempted) {
 			if (!fil_user_tablespace_find_space_id(fsp)) {
 				return;
